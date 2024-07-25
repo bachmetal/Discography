@@ -2,6 +2,9 @@ package com.navidrahbar.discography.entity;
 
 import jakarta.persistence.*;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "album")
 public class Album {
@@ -18,6 +21,53 @@ public class Album {
 
     @Column(name = "year")
     private Integer year;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "artistid")
+    private Artist artist;
+
+    @ManyToMany
+    @JoinTable(name = "hasgenrealbum",
+            joinColumns = @JoinColumn(name = "albumid"),
+            inverseJoinColumns = @JoinColumn(name = "genreid"))
+    private Set<Genre> genres = new LinkedHashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "hasstylealbum",
+            joinColumns = @JoinColumn(name = "albumid"),
+            inverseJoinColumns = @JoinColumn(name = "styleid"))
+    private Set<Style> styles = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "albumid")
+    private Set<Song> songs = new LinkedHashSet<>();
+
+    public Set<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(Set<Song> songs) {
+        this.songs = songs;
+    }
+
+    public Set<Style> getStyles() {
+        return styles;
+    }
+
+    public void setStyles(Set<Style> styles) {
+        this.styles = styles;
+    }
+
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
 
     public Integer getId() {
         return id;
@@ -50,5 +100,4 @@ public class Album {
     public void setYear(Integer year) {
         this.year = year;
     }
-
 }

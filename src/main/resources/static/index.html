@@ -8,25 +8,63 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div class="container">
+    <nav class="nav navbar navbar-dark rounded" style="background-color: rgb(14,12,13)">
+        <a href="#" class="navbar-brand mb-0 h1 text-white">
+            <img class="d-inline-block align-center me-3"
+                 src="img/logo.jfif" width="30"
+                 height="30">Discography
+        </a>
+
+        <ul class="nav">
+            <li class="nav-item active">
+                <a href="#" class="nav-link text-white">Submit a request</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link"></a>
+            </li>
+        </ul>
+    </nav>
+
+
     <h1 class="text-center">Discography</h1>
     <div><label>Search</label>
         <input type="text" placeholder="keyword">
         <button href="#" class="btn btn-primary">Search</button>
     </div>
-    <div class="card" style="width: 100%;">
-        <img id="artist-name" class="card-img-top" alt="Artist name">
-        <div class="card-body">
-            <h5 class="card-title"></h5>
+    <div class="row">
+        <div class="col-4 mt-2">
             <div class="card" style="width: 100%;">
-                <ul class="list-group list-group-flush">
-<!--                    <li class="list-group-item">An item</li>-->
-<!--                    <li class="list-group-item">A second item</li>-->
-<!--                    <li class="list-group-item">A third item</li>-->
-                </ul>
+                <img class="card-img-top" alt="Artist Thumbnail">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <h5 class="card-title">Artist #1</h5>
+                        </div>
+                        <div class="col-6">
+                            <p>published year</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <p>Genre: ***</p>
+                        </div>
+                        <div class="col-6">
+                            <p>Style: ***</p>
+                        </div>
+                    </div>
+                    <div class="card" style="width: 100%;">
+                        <ul class="list-group list-group-flush">
+                            <!--                            <li class="list-group-item">Song1</li>-->
+                            <!--                            <li class="list-group-item">Song2</li>-->
+                            <!--                            <li class="list-group-item">Song3</li>-->
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
