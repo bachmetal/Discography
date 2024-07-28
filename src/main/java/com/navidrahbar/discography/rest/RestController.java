@@ -1,7 +1,13 @@
 package com.navidrahbar.discography.rest;
 
+import com.navidrahbar.discography.entity.Album;
 import com.navidrahbar.discography.entity.Artist;
+import com.navidrahbar.discography.entity.Song;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -13,18 +19,23 @@ public class RestController {
         this.dataManager = dataManager;
     }
 
-    @org.springframework.web.bind.annotation.GetMapping("/artists")
+    @GetMapping("/artists")
     public ResponseEntity<List<Artist>> getArtistList() {
         return ResponseEntity.ok(dataManager.getArtistList());
     }
 
-    @org.springframework.web.bind.annotation.GetMapping("/artists/{id}")
-    public ResponseEntity<Artist> getArtistById(@org.springframework.web.bind.annotation.PathVariable int id) {
+    @GetMapping("/artists/{id}")
+    public ResponseEntity<Artist> getArtistById(@PathVariable int id) {
         return ResponseEntity.ok(dataManager.getArtistById(id));
     }
 
-    @org.springframework.web.bind.annotation.PostMapping("/artists")
-    public ResponseEntity<Artist> addArtist(@org.springframework.web.bind.annotation.RequestBody Artist artist) {
+    @PostMapping("/artists")
+    public ResponseEntity<Artist> addArtist(@RequestBody Artist artist) {
         return ResponseEntity.ok(dataManager.addArtist(artist));
+    }
+
+    @GetMapping("/albums/songs/search/{songname}")
+    public ResponseEntity<Album> getAlbumBySongName(@PathVariable String songname) {
+        return ResponseEntity.ok(dataManager.getAlbumBySongName(songname));
     }
 }

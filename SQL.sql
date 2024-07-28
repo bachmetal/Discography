@@ -81,8 +81,7 @@ VALUES ("Live At MSG", 2023,
        ("AfterLife", 2024,
         "https://i.discogs.com/N81BlTVdNHjjywhXBZEjS9Q-j7bEiWK0DyTqBKGP980/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI0MjM3/MjkwLTE2NjA4MjQx/MDAtNTc5NS5qcGVn.jpeg",
         3),
-       ("
-The Wrong Side Of Heaven And The Righteous Side Of Hell, Volume 2", 2023,
+       ("The Wrong Side Of Heaven And The Righteous Side Of Hell, Volume 2", 2023,
         "https://i.discogs.com/i2tGxm6koOpjdP-JMLUFn7hYiJ9kyUqQqrS40PkONls/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTUxMzg0/MzktMTM5MjM0OTQ0/OS04NjAzLmpwZWc.jpeg",
         3);
 

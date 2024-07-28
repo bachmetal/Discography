@@ -1,0 +1,38 @@
+.navbar-brand {
+    display: inline-flex;
+    align-items: center;
+}
+
+img {
+    margin: 0;
+}
+.search {
+    margin-bottom: 5px;
+}
+.list-group-item+.list-group-item {
+    border-top-width: 1px;
+}
+.artistNames {
+    display: inline-flex;
+    flex-flow: wrap;
+    align-items: start;
+    border-top-width: 1px;
+}
+
+#currentArtists {
+    display: flex;
+    flex-direction: row;
+}
+
+.artistDetail {
+    max-width: 100%;
+    width: fit-content;
+    position: relative;
+    margin: 2rem;
+}
+
+#tracks {
+    position: relative;
+    margin-left: 2rem;
+    margin-top: 2rem;
+}

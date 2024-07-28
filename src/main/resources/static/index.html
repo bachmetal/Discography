@@ -14,10 +14,11 @@
 
 <div class="container">
     <nav class="nav navbar navbar-dark rounded" style="background-color: rgb(14,12,13)">
-        <a href="#" class="navbar-brand mb-0 h1 text-white">
+        <a href="#" class="navbar-brand mb-0 text-white">
             <img class="d-inline-block align-center me-3"
-                 src="img/logo.jfif" width="30"
-                 height="30">Discography
+                 src="img/logo.jpeg" width="50"
+                 height="50">
+            <h2>Discography</h2>
         </a>
 
         <ul class="nav">
@@ -30,45 +31,29 @@
         </ul>
     </nav>
 
-
-    <h1 class="text-center">Discography</h1>
-    <div><label>Search</label>
+    <div class="search">
+        <label>Search</label>
         <input type="text" placeholder="keyword">
-        <button href="#" class="btn btn-primary">Search</button>
+        <button id="search" class="btn btn-primary">Search</button>
     </div>
-    <div class="row">
-        <div class="col-4 mt-2">
-            <div class="card" style="width: 100%;">
-                <img class="card-img-top" alt="Artist Thumbnail">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <h5 class="card-title">Artist #1</h5>
-                        </div>
-                        <div class="col-6">
-                            <p>published year</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <p>Genre: ***</p>
-                        </div>
-                        <div class="col-6">
-                            <p>Style: ***</p>
-                        </div>
-                    </div>
-                    <div class="card" style="width: 100%;">
-                        <ul class="list-group list-group-flush">
-                            <!--                            <li class="list-group-item">Song1</li>-->
-                            <!--                            <li class="list-group-item">Song2</li>-->
-                            <!--                            <li class="list-group-item">Song3</li>-->
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <ul class="list-group" id="currentArtists"></ul>
+    <div class="artistDetail">
+        <div class="list-group" id="albums">
+            Albums:
+<!--            <a href="#" class="list-group-item list-group-item-action">album #1</a>-->
+<!--            <a href="#" class="list-group-item list-group-item-action">album #2</a>-->
+<!--            <a href="#" class="list-group-item list-group-item-action">album #3</a>-->
         </div>
+        <div id="tracks">
+            Tracks:
+            <ul class="list-group">
+<!--                <li class="list-group-item">track #1</li>-->
+<!--                <li class="list-group-item">track #2</li>-->
+<!--                <li class="list-group-item">track #3</li>-->
+            </ul>
+        </div>
+        <script src="js/script.js"></script>
     </div>
-    <script src="js/script.js"></script>
 </div>
 </body>
 </html>
