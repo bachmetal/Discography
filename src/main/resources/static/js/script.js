@@ -1,96 +1,115 @@
-document.querySelector("#search").addEventListener("click", search);
-
-artistsInDB().then(r => console.log("Artists from DB loaded"));
+const artists = fetchArtists();
 
 // Utility function for fetching artists
 async function fetchArtists() {
     try {
         let response = await fetch("http://localhost:8080/artists", {method: "GET"});
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         return await response.json();
     } catch (error) {
-        throw new Error(`Error fetching artist: ${error.message}`);
+        console.error(`Error fetching artist: ${error.message}`);
+        return [];
     }
 }
 
-// Refactored artistsInDB function
+// Function to create artist list item
+function createArtistListItem(artist) {
+    let htmlliElement = document.createElement("a");
+    htmlliElement.className = "list-group-item list-group-item-action rounded";
+    htmlliElement.innerText = artist.name;
+    return htmlliElement;
+}
+
+// Function to display artists in the list
 async function artistsInDB() {
     try {
         let data = await fetchArtists();
-        for (let i = 0; i < data.length; i++) {
-            let htmlliElement = document.createElement("a");
-            htmlliElement.className = "list-group-item list-group-item-action rounded";
-            htmlliElement.innerText = data[i].name;
-            document.querySelector("#currentArtists").appendChild(htmlliElement);
-        }
+        let currentArtists = document.querySelector("#currentArtists");
+        currentArtists.innerHTML = ""; // Clear existing artists
+        data.forEach(artist => {
+            currentArtists.appendChild(createArtistListItem(artist));
+        });
     } catch (error) {
         console.error(error.message);
     }
 }
 
-// Refactored getArtistFromSearchbox function
+// Function to get artist from search box
 function getArtistFromSearchbox(callback) {
     let userSearch = document.querySelector("input").value;
-    fetchArtists().then(data => {
-        let result = null;
-        for (let i = 0; i < data.length; i++) {
-            for (let j = 0; j < data[i].albums.length; j++) {
-                data[i].albums[j].songs.forEach(song => {
-                    if (song.name.toLowerCase().includes(userSearch.toLowerCase())) {
-                        result = data[i];
-                    }
-                });
-            }
-        }
-        if (result === null) {
-            callback("No artist found with that name");
-        } else {
-            callback(result);
-        }
+    if (userSearch === "") return;
+    artists.then(data => {
+        let result = data.find(artist =>
+            artist.albums.some(album =>
+                album.songs.some(song =>
+                    song.name.toLowerCase().includes(userSearch.toLowerCase())
+                )
+            )
+        );
+        callback(result || "No artist found with that name");
     }).catch(error => callback(error.message));
 }
 
+// Function to handle search
 function search() {
     let children = document.querySelector("#currentArtists").children;
     getArtistFromSearchbox(artist => {
         if (artist) {
-            for (let i = 0; i < children.length; i++) { // add ".active" class to artist name
-                children[i].classList.remove("active");
-                if (children[i].innerText === artist.name) {
-                    children[i].classList.add("active");
-                }
-            }
+            Array.from(children).forEach(child => {
+                child.classList.toggle("active", child.innerText === artist.name);
+            });
         } else {
             alert("No artist found with that name");
         }
     });
 }
 
+// Function to create album card
+function createAlbumCard(album) {
+    let anchorElement = document.createElement("a");
+    anchorElement.classList.add("list-group-item", "list-group-item-action");
+    anchorElement.innerHTML = `
+        <div class="card">
+            <img class="card-img-top" src="${album.thumbnailphoto}" alt="${album.name}">
+            <div class="card-body">
+                <h5 class="card-title">${album.name}</h5>
+                <p> Year: ${album.year}</p>
+                <p> Style: ${album.styles.map(style => style.name).join(", ")}</p>
+            </div>
+        </div>`;
+    return anchorElement;
+}
+
+// Event listener for artist selection
 document.querySelector("#currentArtists").addEventListener("click", function (event) {
-    document.querySelector(".active").classList.remove("active");
-    document.querySelector("#albums").innerHTML = "";
-    document.querySelector("#tracks").innerHTML = "";
-    event.target.classList.add("active");
-    fetchArtists().then(data => {
-        for (let i = 0; i < data.length; i++) {
-            let album = document.createElement("a");
-            album.classList.add("list-group-item", "list-group-item-action");
+    if (event.target.classList.contains("list-group-item")) {
+        document.querySelector(".active")?.classList.remove("active");
+        document.querySelector("#albums").innerHTML = "";
+        document.querySelector("#tracks").innerHTML = "";
+        event.target.classList.add("active");
+
+        artists.then(data => {
             let artist = data.find(artist => artist.name === event.target.innerText);
             if (artist) {
-                album.innerHTML = artist.albums[i].name;
-                document.querySelector("#albums").appendChild(album);
+                artist.albums.forEach(album => {
+                    document.querySelector("#albums").appendChild(createAlbumCard(album));
+                });
             }
-        }
-    });
+        });
+    }
 });
 
-// add track base on album which is on target
+// Event listener for album selection
 document.querySelector("#albums").addEventListener("click", function (event) {
-    document.querySelector("#tracks").innerHTML = "";
-    fetchArtists().then(data => {
-
+    if (event.target.closest(".card")) {
+        document.querySelector("#tracks").innerHTML = "";
+        artists.then(data => {
             let artist = data.find(artist => artist.name === document.querySelector(".active").innerText);
+
             if (artist) {
-                let album = artist.albums.find(album => album.name === event.target.innerText);
+                let album = artist.albums.find(album => album.name === event.target.closest(".card").querySelector(".card-title").innerText);
                 album.songs.forEach(song => {
                     let track = document.createElement("a");
                     track.classList.add("list-group-item", "list-group-item-action");
@@ -98,15 +117,10 @@ document.querySelector("#albums").addEventListener("click", function (event) {
                     document.querySelector("#tracks").appendChild(track);
                 });
             }
-
-    });
+        });
+    }
 });
 
-document.createElement(`<div class="card" style="width: 18rem;">
-  <img class="card-img-top" src=".../100px180/" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-</div>`);
+// Initial load of artists
+artistsInDB().then(r => console.log("Artists loaded"));
+document.querySelector("#search").addEventListener("click", search);
