@@ -59,11 +59,11 @@ CREATE TABLE hasgenrealbum
 
 INSERT INTO artist(name, thumbnailPhoto)
 VALUES ("Slipknot",
-        "https://i.discogs.com/yq8SNmM-HrZ87prqJsQ-pWovC035-6r9RvFpwnqkLVc/rs:fit/g:sm/q:90/h:600/w:533/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM4NTIz/LTE3MTQ1NjIwNDQt/MjExOS5qcGVn.jpeg"),
+        "https://e-cdns-images.dzcdn.net/images/artist/7a66231b65ed2a4040991bf5730c4826/500x500-000000-80-0-0.jpg"),
        ("Metallica",
-        "https://i.discogs.com/ypZclL3aRCjEtOU8NTTljmZA2yDB3zl9TiG5SrMUkFg/rs:fit/g:sm/q:90/h:435/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4ODM5/LTE1NTU4NTQxNjQt/MjM4Ny5qcGVn.jpeg"),
+        "https://cdns-images.dzcdn.net/images/artist/b4719bc7a0ddb4a5be41277f37856ae6/500x500-000000-80-0-0.jpg"),
        ("Five Finger Death Punch",
-        "https://i.discogs.com/c2_IBjugjiIUE8mheFRrZHT6tQJJYXv0Dk3yrEOFZVc/rs:fit/g:sm/q:90/h:399/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE1MDI3/MjctMTcwOTgyNzU1/My03ODcwLnBuZw.jpeg");
+        "https://cdns-images.dzcdn.net/images/artist/9de74fe4dcb22adfc4dab26ea1f7c02c/500x500-000000-80-0-0.jpg");
 
 INSERT INTO album(name, year, thumbnailphoto, ArtistId)
 VALUES ("Live At MSG", 2023,

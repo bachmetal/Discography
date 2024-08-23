@@ -37,6 +37,10 @@ public class DataManager {
         return artistRepository.findById(id).orElse(null);
     }
 
+    public List<Album> getAlbumsByArtistId(int id) {
+        return albumRepository.findAllByArtistId(id);
+    }
+
     public Artist addArtist(Artist artist) {
         return artistRepository.save(artist);
     }
@@ -45,7 +49,7 @@ public class DataManager {
         return songRepository.findAll();
     }
 
-    public Album getAlbumBySongName(String name) {
+    public List<Album> getAlbumBySongName(String name) {
         return albumRepository.getAlbumBySongName(name);
     }
 }
