@@ -1,3 +1,5 @@
+/*
+
 // Utility function for fetching artists
 async function fetchArtists() {
     try {
@@ -95,13 +97,13 @@ async function fetchAlbum(id) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-    if (window.location.toString().endsWith("index.html")) {
+    if (window.location.toString().endsWith("index.h")) {
         artistCards().then(r => console.log("Artists loaded"));
 
         document.querySelector(".card").addEventListener("click", function (e) {
             sessionStorage.setItem("artistId", e.target.id);
         })
-    } else if (window.location.toString().endsWith("albums.html")) {
+    } else if (window.location.toString().endsWith("albums.h")) {
         if (sessionStorage.getItem("artistId") == null) {
             document.querySelector("#albums").innerHTML = "<h1>Sorry, but you didn't choose any artist.</h1>";
             return;
@@ -112,3 +114,4 @@ document.addEventListener("DOMContentLoaded", async function () {
 // `;
     }
 })
+ */

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@RequestMapping("/api")
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
     private com.navidrahbar.discography.rest.DataManager dataManager;

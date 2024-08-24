@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Artists</title>
+</head>
+<body>
+<div th:fragment="artists" class="card d-inline-flex flex-row flex-wrap" id="cards">
+    <div th:each="artist : ${artists}">
+        <button type="button" class="card m-2 stretched-link btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#albums" style="width: 18rem;"
+                th:id="${artist.id}">
+            <div class="card-body">
+                <p class="card-title text-decoration-none fs-5 fw-bold" th:text="${artist.name}"></p>
+                <img class="card-image-top w-100 rounded-4" th:src="${artist.thumbnailphoto}">
+            </div>
+        </button>
+    </div>
+</div>
+
+
+<div th:fragment="album" class="modal fade" th:id="album" tabindex="-1" role="dialog"
+     aria-labelledby="albumName" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content d-flex p-2">
+            <div class="modal-header" style="height: 2rem; background-color: rgba(11,94,215,0.1)">
+                <h4>Artist name</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body d-flex flex-row">
+                <div th:id="thumbnail" class="d-flex flex-column" style="width: 50%; height: fit-content">
+                    <h5>Album Name</h5>
+                    <img class="img-fluid img-thumbnail rounded-3 shadow-sm mb-3" th:src="@{https://picsum.photos/800}"
+                         alt="Thumbnail">
+                    <p>Year: </p>
+                    <p>Style: </p>
+                    <p>Genre: </p>
+                </div>
+                <div th:id="tracklist" class="d-flex flex-column m-3" style="width: 50%">
+                    <h4 class="justify-content-center mb-5">Tracklist:</h4>
+                    <div class="list-group shadow">
+                        <li class="list-group-item">Track 1</li>
+                        <li class="list-group-item">Track 2</li>
+                        <li class="list-group-item">Track 3</li>
+                        <li class="list-group-item">Track 4</li>
+                        <li class="list-group-item">Track 5</li>
+                        <li class="list-group-item">Track 6</li>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<div th:fragment="albums" class="modal fade" th:id="albums" tabindex="-1" role="dialog" aria-labelledby="albumName"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content d-flex p-2">
+            <div class="modal-header">
+                <h5>Artist</h5>
+            </div>
+            <div class="modal-body d-flex justify-content-center">
+                <div class="d-flex flex-column" style="width: 75%">
+                    <div class="d-flex flex-row justify-content-center">
+                        <img class="img-thumbnail img-fluid w-50" th:src="@{https://picsum.photos/800}" alt="thumbnail">
+                    </div>
+                    <h4 class="justify-content-start mb-3">Albums:</h4>
+                    <div class="list-group shadow" th:each="album : ${albums}">
+                        <button type="button" class="list-group-item" data-bs-toggle="modal"
+                                data-bs-target="#album" th:text="${album.name}">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

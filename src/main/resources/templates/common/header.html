@@ -1,20 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Discography</title>
-    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Header</title>
+
 </head>
 <body>
 
-<div class="container">
-    <header>
+    <header th:fragment="header">
         <nav class="nav navbar navbar-dark rounded" style="background-color: rgb(14,12,13)">
-            <a href="index.html" class="navbar-brand mb-0 text-white">
+            <a th:href="@{/}" class="navbar-brand mb-0 text-white">
                 <img class="d-inline-block align-center me-3"
-                     src="img/logo.jpeg" width="50"
+                     th:src="@{img/logo.jpeg}" width="50"
                      height="50">
                 <h2>Discography</h2>
             </a>
@@ -33,12 +30,10 @@
         </div>
     </header>
 
-    <div class="card d-inline-flex flex-row flex-wrap" id="cards"></div>
 
-    <footer class="d-flex fixed-bottom justify-content-start ms-5">
+    <footer th:fragment="footer" class="d-flex fixed-bottom justify-content-end me-5">
         <div>Copyright 2024 by Navid Rahbar</div>
     </footer>
-    <script src="js/script.js"></script>
-</div>
+
 </body>
 </html>

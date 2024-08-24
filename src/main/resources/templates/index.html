@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Artists</title>
+    <link th:href="@{css/bootstrap/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{js/bootstrap/bootstrap.bundle.min.js}"></script>
+    <link th:href="@{css/style.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{common/header :: header}"></div>
+    <div th:replace="~{common/artists :: artists}"></div>
+    <div th:replace="~{common/artists :: albums}"></div>
+    <div th:replace="~{common/artists :: album}"></div>
+    <div th:replace="~{common/header :: footer}"></div>
+</div>
+<script th:src="@{js/script.js}"></script>
+</body>
+</html>
