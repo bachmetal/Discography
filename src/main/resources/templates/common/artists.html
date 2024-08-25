@@ -5,10 +5,10 @@
     <title>Artists</title>
 </head>
 <body>
-<div th:fragment="artists" class="card d-inline-flex flex-row flex-wrap" id="cards">
-    <div th:each="artist : ${artists}">
+<div th:fragment="artists" class="card d-inline-flex flex-row flex-wrap w-100" id="cards">
+    <div th:each="artist : ${artists}" class="col-3">
         <button type="button" class="card m-2 stretched-link btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#albums" style="width: 18rem;"
+                data-bs-target="#albums" style="width: 18rem; height: 22rem"
                 th:id="${artist.id}">
             <div class="card-body">
                 <p class="card-title text-decoration-none fs-5 fw-bold" th:text="${artist.name}"></p>
@@ -18,8 +18,7 @@
     </div>
 </div>
 
-
-<div th:fragment="album" class="modal fade" th:id="album" tabindex="-1" role="dialog"
+<div th:fragment="album" class="modal fade" id="album" tabindex="-1" role="dialog"
      aria-labelledby="albumName" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content d-flex p-2">
@@ -31,25 +30,25 @@
             <div class="modal-body d-flex flex-row">
                 <div th:id="thumbnail" class="d-flex flex-column" style="width: 50%; height: fit-content">
                     <h5>Album Name</h5>
-                    <img class="img-fluid img-thumbnail rounded-3 shadow-sm mb-3" th:src="@{https://picsum.photos/800}"
+                    <img class="img-fluid img-thumbnail rounded-3 shadow-sm mb-3 me-5"
+                         th:src="@{https://picsum.photos/800}"
                          alt="Thumbnail">
                     <p>Year: </p>
                     <p>Style: </p>
                     <p>Genre: </p>
                 </div>
-                <div th:id="tracklist" class="d-flex flex-column m-3" style="width: 50%">
-                    <h4 class="justify-content-center mb-5">Tracklist:</h4>
+                <div th:id="tracklist" class="d-flex flex-column" style="width: 50%">
+                    <h4 class="justify-content-center mb-2">Tracklist:</h4>
                     <div class="list-group shadow">
-                        <li class="list-group-item">Track 1</li>
-                        <li class="list-group-item">Track 2</li>
-                        <li class="list-group-item">Track 3</li>
-                        <li class="list-group-item">Track 4</li>
-                        <li class="list-group-item">Track 5</li>
-                        <li class="list-group-item">Track 6</li>
+                        <!--                        <li class="list-group-item">Track 1</li>-->
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <div class="d-inline-flex flex-row flex-fill">
+                <button type="button" class="btn btn-secondary w-100 m-3" data-bs-toggle="modal"
+                        data-bs-target="#albums">Back
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -58,18 +57,21 @@
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content d-flex p-2">
             <div class="modal-header">
-                <h5 class="m-0">Artist</h5>
+                <h5 class="m-0" id="artist">Artist</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex justify-content-center">
                 <div class="d-flex flex-column" style="width: 75%">
                     <div class="d-flex flex-row justify-content-center">
-                        <img class="img-thumbnail img-fluid w-50" th:src="@{https://picsum.photos/800}" alt="thumbnail">
+                        <img class="img-thumbnail img-fluid w-50 artist-thumbnail" th:src="@{https://picsum.photos/800}"
+                             alt="thumbnail">
                     </div>
                     <h4 class="justify-content-start mb-3">Albums:</h4>
-                    <div class="list-group shadow" th:each="album : ${albums}">
-                        <button type="button" class="list-group-item" data-bs-toggle="modal"
-                                data-bs-target="#album" th:text="${album.name}">
+                    <div class="list-group shadow albumlist">
+                        <!--                        <button type="button" class="list-group-item d-inline-flex justify-content-between" data-bs-toggle="modal"-->
+                        <!--                                data-bs-target="#album">-->
+                        <!--                            <p class="m-0">Album Name</p>-->
+                        <!--                            <p class="m-0">Year</p>-->
                         </button>
                     </div>
                 </div>

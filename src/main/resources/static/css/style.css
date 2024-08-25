@@ -15,5 +15,6 @@ img {
     margin-bottom: 5px;
 }
 
-
-
+.bg-primary {
+    background-color: rgba(41, 66, 94, 0.45) !important;
+}

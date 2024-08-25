@@ -19,6 +19,17 @@ public class Artist {
     @Column(name = "thumbnailphoto", length = 500)
     private String thumbnailphoto;
 
+    @OneToMany(mappedBy = "artist")
+    private Set<Album> albums = new LinkedHashSet<>();
+
+    public Set<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(Set<Album> albums) {
+        this.albums = albums;
+    }
+
     public Integer getId() {
         return id;
     }
