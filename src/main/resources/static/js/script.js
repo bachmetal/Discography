@@ -155,7 +155,7 @@ document.querySelector("#search-button").addEventListener("click", async functio
                 let forEach = data.forEach(artist => {
                     if (artist.name.toLowerCase().includes(keyword.toLowerCase())) {
                         let artistElement = document.createElement("ul");
-                        artistElement.classList.add("list-group-item");
+                        artistElement.classList.add("list-group-item","m-2");
                         artistElement.innerText = artist.name;
                         listGroup.appendChild(artistElement);
                     }
@@ -163,7 +163,7 @@ document.querySelector("#search-button").addEventListener("click", async functio
                     artist.albums.forEach(album => {
                         if (album.name.toLowerCase().includes(keyword.toLowerCase())) {
                             let artistElement = document.createElement("ul");
-                            artistElement.classList.add("list-group-item");
+                            artistElement.classList.add("list-group-item","m-2");
                             artistElement.innerText = artist.name;
 
                             let albumElement = document.createElement("ul");
@@ -178,7 +178,7 @@ document.querySelector("#search-button").addEventListener("click", async functio
                         album.songs.forEach(song => {
                             if (song.name.toLowerCase().includes(keyword.toLowerCase())) {
                                 let artistElement = document.createElement("ul");
-                                artistElement.classList.add("list-group-item");
+                                artistElement.classList.add("list-group-item","m-2");
                                 artistElement.innerText = artist.name;
 
                                 let albumElement = document.createElement("ul");
