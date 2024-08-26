@@ -168,10 +168,9 @@ document.querySelector("#search-button").addEventListener("click", async functio
                 artistElement.innerText = artist.name;
 
                 let albumElement = document.createElement("ul");
-                albumElement.classList.add("list-group-item");
-                albumElement.style.backgroundColor = "lightgray";
+                albumElement.classList.add("list-group-item","shadow","rounded");
+                albumElement.setAttribute("style", "background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(11,94,215,1) 100%);");
                 albumElement.innerText = album.name;
-
                 listGroup.appendChild(artistElement);
                 artistElement.appendChild(albumElement);
             }
@@ -183,8 +182,8 @@ document.querySelector("#search-button").addEventListener("click", async functio
                         artistElement.innerText = artist.name;
 
                         let albumElement = document.createElement("ul");
-                        albumElement.classList.add("list-group-item");
-                        albumElement.style.backgroundColor = "lightgray";
+                        albumElement.classList.add("list-group-item", "shadow","rounded");
+                        albumElement.setAttribute("style", "background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(11,94,215,1) 100%);");
                         albumElement.innerText = album.name;
 
                         let songElement = document.createElement("li");
