@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 })
  */
 let clickedArtistIndex;
+let clickedAlbumIndex;
 let artistsData;
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -83,37 +84,37 @@ document.addEventListener("DOMContentLoaded", async function () {
 // Album List
 document.querySelector("#cards").addEventListener("click", async function (e) {
     if (!artistsData) return; // Ensure data is available
-
     clickedArtistIndex = e.target.id - 1;
 
     document.querySelector("#artist").innerText = e.target.innerText;
     document.querySelector("img.artist-thumbnail").src = e.target.querySelector("img").src;
-    let albumList = document.querySelector("div.albumlist");
+
+    let albumList = document.querySelector(".albumlist");
     albumList.innerHTML = "";
 
     for (let i = 0; i < artistsData[clickedArtistIndex].albums.length; i++) {
+        // const button = document.querySelector(".albumlist button");
+        // button.setAttribute("id", artistsData[clickedArtistIndex].albums[i].id);
+        // button.querySelector(".album-name").innerText = artistsData[clickedArtistIndex].albums[i].name;
+        // button.querySelector(".album-year").innerText = artistsData[clickedArtistIndex].albums[i].year;
+
         let button = document.createElement("button");
 
-        button.classList.add("list-group-item", "d-inline-flex", "justify-content-between", "album-name");
+        button.classList.add("list-group-item", "d-inline-flex", "justify-content-between");
         button.type = "button";
         button.setAttribute("data-bs-toggle", "modal");
         button.setAttribute("data-bs-target", "#album");
+        button.setAttribute("onclick", "albumBtn(this)");
         button.id = artistsData[clickedArtistIndex].albums[i].id;
 
         let albumName = document.createElement("p");
-        albumName.classList.add("m-0");
+        albumName.classList.add("m-0", "album-name");
         albumName.innerText = artistsData[clickedArtistIndex].albums[i].name;
-        albumName.addEventListener("click", function (event) {
-            event.defaultPrevented();
-        });
 
         let year = document.createElement("p");
         year.classList.add("m-0");
         year.innerText = artistsData[clickedArtistIndex].albums[i].year;
-        year.classList.add("badge", "bg-primary", "rounded-pill");
-        year.addEventListener("click", function (event) {
-            event.defaultPrevented();
-        });
+        year.classList.add("badge", "bg-primary", "rounded-pill", "album-year");
 
         button.appendChild(albumName);
         button.appendChild(year);
@@ -122,11 +123,13 @@ document.querySelector("#cards").addEventListener("click", async function (e) {
 });
 
 // Album
-document.querySelector("#albums > div > div > div.modal-body.d-flex.justify-content-center > div > div.list-group.shadow.albumlist").addEventListener("click", async function (e) {
+const albumBtn = async (button) => {
     if (!artistsData) return; // Ensure data is available
+    clickedAlbumIndex = button.getAttribute("id");
+
     let tracklist = document.querySelector("#tracklist > div");
     tracklist.innerHTML = "";
-    let find = artistsData[clickedArtistIndex].albums.find(album => album.name === e.target.closest("button").querySelector("p").innerText);
+    let find = artistsData[clickedArtistIndex].albums.find(album => album.name === button.querySelector(".album-name").innerText);
     document.querySelector("#album > div > div > div.modal-header > h4").innerText = document.querySelector("#artist").innerText;
     document.querySelector("#thumbnail > h5").innerText = find.name;
     document.querySelector("#thumbnail > img").src = find.thumbnailphoto;
@@ -140,7 +143,7 @@ document.querySelector("#albums > div > div > div.modal-body.d-flex.justify-cont
         track.innerText = (i + 1) + ". " + find.songs[i].name;
         tracklist.appendChild(track);
     }
-});
+}
 
 // Search button
 document.querySelector("#search-button").addEventListener("click", async function (e) {
@@ -152,6 +155,7 @@ document.querySelector("#search-button").addEventListener("click", async functio
         return;
     }
 
+    document.querySelector(".search-result-title").innerHTML = keyword;
 
     let forEach = artistsData.forEach(artist => {
         if (artist.name.toLowerCase().includes(keyword.toLowerCase())) {
@@ -168,11 +172,16 @@ document.querySelector("#search-button").addEventListener("click", async functio
                 artistElement.innerText = artist.name;
 
                 let albumElement = document.createElement("ul");
-                albumElement.classList.add("list-group-item","shadow","rounded");
+                albumElement.classList.add("list-group-item", "shadow", "rounded");
                 albumElement.setAttribute("style", "background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(11,94,215,1) 100%);");
-                albumElement.innerText = album.name;
-                listGroup.appendChild(artistElement);
+                let albumLink = document.createElement("a");
+                albumLink.href = "#";
+                albumLink.innerText = album.name;
+
+                console.log(albumLink);
+                albumElement.appendChild(albumLink);
                 artistElement.appendChild(albumElement);
+                listGroup.appendChild(artistElement);
             }
 
             album.songs.forEach(song => {
@@ -182,7 +191,7 @@ document.querySelector("#search-button").addEventListener("click", async functio
                         artistElement.innerText = artist.name;
 
                         let albumElement = document.createElement("ul");
-                        albumElement.classList.add("list-group-item", "shadow","rounded");
+                        albumElement.classList.add("list-group-item", "shadow", "rounded");
                         albumElement.setAttribute("style", "background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(11,94,215,1) 100%);");
                         albumElement.innerText = album.name;
 
