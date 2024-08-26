@@ -8,4 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ArtistRepository extends JpaRepository<Artist, Integer> {
+    @Query(value = "select a from Artist a join a.albums al join al.songs s " +
+            "where s.name like %?1% " +
+            "or al.name like %?1% " +
+            "or a.name like %?1%")
+    List<Artist> getSearchResult(String keyword);
 }

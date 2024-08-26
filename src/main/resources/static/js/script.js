@@ -71,8 +71,9 @@ document.addEventListener("DOMContentLoaded", async function () {
  */
 let clickedArtistIndex;
 
+// Album List
 document.querySelector("#cards").addEventListener("click", async function (e) {
-    const albumList = await fetch(`http://localhost:8080/api/artists`, {method: "GET"})
+    const albumList = fetch(`api/artists`, {method: "GET"})
         .then(response => response.json().then(data => {
                     clickedArtistIndex = e.target.id - 1;
 
@@ -114,8 +115,9 @@ document.querySelector("#cards").addEventListener("click", async function (e) {
         );
 });
 
+// Album
 document.querySelector("#albums > div > div > div.modal-body.d-flex.justify-content-center > div > div.list-group.shadow.albumlist").addEventListener("click", async function (e) {
-    const album = await fetch(`http://localhost:8080/api/artists`, {method: "GET"})
+    const album = await fetch(`api/artists`, {method: "GET"})
         .then(response => response.json().then(data => {
                     let tracklist = document.querySelector("#tracklist > div");
                     tracklist.innerHTML = "";
@@ -137,3 +139,65 @@ document.querySelector("#albums > div > div > div.modal-body.d-flex.justify-cont
             )
         ).catch(error => console.error(error));
 });
+
+// Search button
+document.querySelector("#search-button").addEventListener("click", async function (e) {
+        const keyword = document.querySelector("input").value;
+        let listGroup = document.querySelector("#search > div > div > div.modal-body.d-flex.justify-content-center > div > div");
+        listGroup.innerHTML = "";
+        if (keyword === "") {
+            listGroup.innerHTML = "<h3 class='d-flex justify-content-center'>Please enter a keyword!</h3>";
+            return;
+        }
+
+        const result = await fetch(`api/artists`, {method: "GET"})
+            .then(response => response.json().then(data => {
+                let forEach = data.forEach(artist => {
+                    if (artist.name.toLowerCase().includes(keyword.toLowerCase())) {
+                        let artistElement = document.createElement("ul");
+                        artistElement.classList.add("list-group-item");
+                        artistElement.innerText = artist.name;
+                        listGroup.appendChild(artistElement);
+                    }
+
+                    artist.albums.forEach(album => {
+                        if (album.name.toLowerCase().includes(keyword.toLowerCase())) {
+                            let artistElement = document.createElement("ul");
+                            artistElement.classList.add("list-group-item");
+                            artistElement.innerText = artist.name;
+
+                            let albumElement = document.createElement("ul");
+                            albumElement.classList.add("list-group-item");
+                            albumElement.style.backgroundColor = "lightgray";
+                            albumElement.innerText = album.name;
+
+                            listGroup.appendChild(artistElement);
+                            artistElement.appendChild(albumElement);
+                        }
+
+                        album.songs.forEach(song => {
+                            if (song.name.toLowerCase().includes(keyword.toLowerCase())) {
+                                let artistElement = document.createElement("ul");
+                                artistElement.classList.add("list-group-item");
+                                artistElement.innerText = artist.name;
+
+                                let albumElement = document.createElement("ul");
+                                albumElement.classList.add("list-group-item");
+                                albumElement.style.backgroundColor = "lightgray";
+                                albumElement.innerText = album.name;
+
+                                let songElement = document.createElement("li");
+                                songElement.classList.add("list-group-item");
+                                songElement.innerText = song.name;
+
+                                listGroup.appendChild(artistElement);
+                                artistElement.appendChild(albumElement);
+                                albumElement.appendChild(songElement);
+                            }
+                        });
+                    });
+                });
+            })
+                .catch(error => console.error(error)));
+    }
+)

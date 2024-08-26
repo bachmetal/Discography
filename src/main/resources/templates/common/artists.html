@@ -52,7 +52,7 @@
         </div>
     </div>
 </div>
-<div th:fragment="albums" class="modal fade" th:id="albums" tabindex="-1" role="dialog" aria-labelledby="albumName"
+<div th:fragment="albums" class="modal fade" id="albums" tabindex="-1" role="dialog" aria-labelledby="albumName"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content d-flex p-2">
@@ -73,6 +73,23 @@
                         <!--                            <p class="m-0">Album Name</p>-->
                         <!--                            <p class="m-0">Year</p>-->
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:fragment="search" class="modal fade" id="search" tabindex="-1" role="dialog" aria-labelledby="searchResult">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content d-flex p-2">
+            <div class="modal-header">
+                <h5 class="m-0">Results:</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-center">
+                <div class="d-flex flex-column" style="width: 100%">
+                    <div class="list-group shadow">
+<!--                        <li class="list-group-item">Track 1</li>-->
                     </div>
                 </div>
             </div>

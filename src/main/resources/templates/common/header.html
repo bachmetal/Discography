@@ -23,11 +23,12 @@
             </ul>
         </nav>
 
-        <div class="search mt-3 mb-5 d-flex justify-content-end" id="search">
-            <label class="align-content-center pe-2">Search:</label>
-            <input type="text" placeholder="keyword">
-            <button id="search-button" class="btn btn-primary">Search</button>
-        </div>
+        <search class="search mt-3 mb-5 d-flex justify-content-end" id="searchButton">
+            <label class="align-content-center pe-2">Search:
+                <input name="keyword" type="text" placeholder="keyword">
+            </label>
+            <button type="button" id="search-button" class="btn btn-primary" data-bs-target="#search" data-bs-toggle="modal">Search</button>
+        </search>
     </header>
 
 

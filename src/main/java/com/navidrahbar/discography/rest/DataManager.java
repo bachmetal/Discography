@@ -52,4 +52,8 @@ public class DataManager {
     public List<Album> getAlbumBySongName(String name) {
         return albumRepository.getAlbumBySongName(name);
     }
+
+    public List<Artist> getSearchResult(String keyword) {
+        return artistRepository.getSearchResult(keyword);
+    }
 }

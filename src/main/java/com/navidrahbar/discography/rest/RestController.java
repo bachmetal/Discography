@@ -33,8 +33,9 @@ public class RestController {
         return ResponseEntity.ok(dataManager.addArtist(artist));
     }
 
-    @GetMapping("/albums")
-    public ResponseEntity<List<Album>> getAlbumBySongName(@RequestParam("songSearch") String songname) {
-        return ResponseEntity.ok(dataManager.getAlbumBySongName(songname));
+    @GetMapping("/search")
+    // http://localhost:8080/api/search?keyword=add
+    public ResponseEntity<List<Artist>> getSearchResult(@RequestParam String keyword) {
+        return ResponseEntity.ok(dataManager.getSearchResult(keyword));
     }
 }
