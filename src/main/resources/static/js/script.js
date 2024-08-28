@@ -148,63 +148,85 @@ const albumBtn = async (button) => {
 // Search button
 document.querySelector("#search-button").addEventListener("click", async function (e) {
     const keyword = document.querySelector("input").value;
-    let listGroup = document.querySelector("#search > div > div > div.modal-body.d-flex.justify-content-center > div > div");
+    let listGroup = document.querySelector("#search div div div.modal-body div div.list-group");
     listGroup.innerHTML = "";
     if (keyword === "") {
+        document.querySelector("#search div div div.modal-header h5").innerText = "No result";
         listGroup.innerHTML = "<h3 class='d-flex justify-content-center'>Please enter a keyword!</h3>";
         return;
     }
 
     document.querySelector(".search-result-title").innerHTML = keyword;
 
-    let forEach = artistsData.forEach(artist => {
+    artistsData.forEach(artist => {
+        let artistFound = false;
+        let artistElement;
+
         if (artist.name.toLowerCase().includes(keyword.toLowerCase())) {
-            let artistElement = document.createElement("ul");
-            artistElement.classList.add("list-group-item", "m-2");
-            artistElement.innerText = artist.name;
+            artistElement = addArtistElementInSearch(artist.name);
             listGroup.appendChild(artistElement);
+            artistFound = true;
         }
 
         artist.albums.forEach(album => {
+            let albumFound = false;
+            let albumElement;
+
             if (album.name.toLowerCase().includes(keyword.toLowerCase())) {
-                let artistElement = document.createElement("ul");
-                artistElement.classList.add("list-group-item", "m-2");
-                artistElement.innerText = artist.name;
-
-                let albumElement = document.createElement("ul");
-                albumElement.classList.add("list-group-item", "shadow", "rounded");
-                albumElement.setAttribute("style", "background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(11,94,215,1) 100%);");
-                let albumLink = document.createElement("a");
-                albumLink.href = "#";
-                albumLink.innerText = album.name;
-
-                console.log(albumLink);
-                albumElement.appendChild(albumLink);
-                artistElement.appendChild(albumElement);
-                listGroup.appendChild(artistElement);
-            }
-
-            album.songs.forEach(song => {
-                    if (song.name.toLowerCase().includes(keyword.toLowerCase())) {
-                        let artistElement = document.createElement("ul");
-                        artistElement.classList.add("list-group-item", "m-2");
-                        artistElement.innerText = artist.name;
-
-                        let albumElement = document.createElement("ul");
-                        albumElement.classList.add("list-group-item", "shadow", "rounded");
-                        albumElement.setAttribute("style", "background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(11,94,215,1) 100%);");
-                        albumElement.innerText = album.name;
-
-                        let songElement = document.createElement("li");
-                        songElement.classList.add("list-group-item");
-                        songElement.innerText = song.name;
-
-                        listGroup.appendChild(artistElement);
-                        artistElement.appendChild(albumElement);
-                        albumElement.appendChild(songElement);
-                    }
+                if (!artistFound) {
+                    artistElement = addArtistElementInSearch(artist.name);
+                    listGroup.appendChild(artistElement);
+                    artistFound = true;
                 }
-            )
-        })
+                albumElement = addAlbumElementInSearch(album.name);
+                artistElement.appendChild(albumElement);
+                albumFound = true;
+            }
+            album.songs.forEach(song => {
+                if (song.name.toLowerCase().includes(keyword.toLowerCase())) {
+                    let songElement = addSongElementInSearch(song.name);
+                    if (!albumFound) {
+                        albumElement = addAlbumElementInSearch(album.name);
+
+                        if (!artistFound) {
+                            artistElement = addArtistElementInSearch(artist.name);
+                            listGroup.appendChild(artistElement);
+                            artistFound = true;
+                        }
+                        artistElement.appendChild(albumElement);
+                        albumFound = true;
+                    }
+                    albumElement.appendChild(songElement);
+                }
+            });
+        });
     });
 });
+
+function addSongElementInSearch(songName) {
+    let songElement = document.createElement("li");
+    songElement.classList.add("list-group-item");
+    songElement.innerText = songName;
+    return songElement;
+}
+
+function addAlbumElementInSearch(albumName) {
+    let albumElement = document.createElement("ul");
+    albumElement.classList.add("list-group-item", "shadow", "rounded", "album");
+    albumElement.setAttribute("style", "background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(11,94,215,1) 100%);");
+
+    let albumLink = document.createElement("a");
+    albumLink.href = "#";
+    albumLink.classList.add("text-decoration-none");
+    albumLink.innerText = albumName;
+    albumLink.style.color = "black";
+    albumElement.appendChild(albumLink);
+    return albumElement;
+}
+
+function addArtistElementInSearch(artistName) {
+    let artistElement = document.createElement("ul");
+    artistElement.classList.add("list-group-item", "m-2", "artist");
+    artistElement.innerText = artistName;
+    return artistElement;
+}
