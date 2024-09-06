@@ -5,16 +5,28 @@
     <title>Artists</title>
 </head>
 <body>
-<div th:fragment="artists" class="card d-flex flex-row flex-wrap w-100" id="cards">
-    <div th:each="artist : ${artists}" class="col-3">
-        <button type="button" class="card m-2 stretched-link btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#albums" style="width: 18rem; height: 22rem"
-                th:id="${artist.id}">
-            <div class="card-body">
-                <p class="card-title text-decoration-none fs-5 fw-bold" th:text="${artist.name}"></p>
-                <img class="card-image-top w-100 rounded-4" th:src="${artist.thumbnailphoto}">
+<div th:fragment="artists">
+    <p th:if="${message}" th:text="${message}" style="color: green" class="d-flex justify-content-center"></p>
+    <div class="card d-flex flex-row flex-wrap w-100" th:id="cards">
+        <div th:each="artist : ${artists}" class="d-flex justify-content-center col-3">
+            <!--@TODO: Add artist button-->
+            <div class="card m-2 btn btn-primary stretched-link" data-bs-toggle="modal"
+                 data-bs-target="#albums" style="width: 18rem; height: 22rem"
+                 th:id="${artist.id}">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex flex-row justify-content-between">
+                        <p class="card-title text-decoration-none fs-5 fw-bold d-flex align-items-center"
+                           th:text="${artist.name}"></p>
+                        <!--@TODO: Add remove artist button to override the artist button-->
+                        <a th:href="@{remove-artist/(id=${artist.id})}" onclick="stopPropagation()" style="z-index: 3">
+                            <img src="https://www.freeiconspng.com/thumbs/remove-icon-png/remove-icon-png-7.png"
+                                 alt="remove" style="width: 15px">
+                        </a>
+                    </div>
+                    <img class="card-image-top w-100 rounded-4" th:src="${artist.thumbnailphoto}">
+                </div>
             </div>
-        </button>
+        </div>
     </div>
 </div>
 
@@ -58,21 +70,21 @@
         <div class="modal-content d-flex p-2">
             <div class="modal-header">
                 <h5 class="m-0" id="artist">Artist</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
             </div>
             <div class="modal-body d-flex justify-content-center">
                 <div class="d-flex flex-column" style="width: 75%">
                     <div class="d-flex flex-row justify-content-center">
-                        <img class="img-thumbnail img-fluid w-50 artist-thumbnail" th:src="@{https://picsum.photos/800}"
+                        <img class="img-thumbnail img-fluid w-50 artist-thumbnail" src="https://picsum.photos/800"
                              alt="thumbnail">
                     </div>
                     <h4 class="justify-content-start mb-3">Albums:</h4>
                     <div class="list-group shadow albumlist">
-<!--                        <button type="button" class="list-group-item d-inline-flex justify-content-between" data-bs-toggle="modal"-->
-<!--                                data-bs-target="#album" onclick="albumBtn(this)">-->
-<!--                            <p class="m-0 album-name">Album Name</p>-->
-<!--                            <p class="m-0 album-year">Year</p>-->
-<!--                        </button>-->
+                        <!--                        <button type="button" class="list-group-item d-inline-flex justify-content-between" data-bs-toggle="modal"-->
+                        <!--                                data-bs-target="#album" onclick="albumBtn(this)">-->
+<!--                                                    <p class="m-0 album-name">Album Name</p>-->
+<!--                                                    <p class="m-0 album-year">Year</p>-->
+                        <!--                        </button>-->
                     </div>
                 </div>
             </div>

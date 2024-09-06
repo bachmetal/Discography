@@ -22,51 +22,29 @@ public class Album {
     @Column(name = "year")
     private Integer year;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "artistid")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artist_Id")
     private Artist artist;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "hasgenrealbum",
             joinColumns = @JoinColumn(name = "albumid"),
             inverseJoinColumns = @JoinColumn(name = "genreid"))
     private Set<Genre> genres = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "hasstylealbum",
             joinColumns = @JoinColumn(name = "albumid"),
             inverseJoinColumns = @JoinColumn(name = "styleid"))
     private Set<Style> styles = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "albumid")
+    @OneToMany(mappedBy = "albumid", cascade = CascadeType.ALL)
     private Set<Song> songs = new LinkedHashSet<>();
 
-    public Set<Song> getSongs() {
-        return songs;
-    }
-
-    public void setSongs(Set<Song> songs) {
-        this.songs = songs;
-    }
-
-    public Set<Style> getStyles() {
-        return styles;
-    }
-
-    public void setStyles(Set<Style> styles) {
-        this.styles = styles;
-    }
-
-    public Set<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(Set<Genre> genres) {
-        this.genres = genres;
-    }
-
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+    public Album() {
+        this.genres = new LinkedHashSet<>();
+        this.styles = new LinkedHashSet<>();
+        this.songs = new LinkedHashSet<>();
     }
 
     public Integer getId() {
@@ -100,4 +78,37 @@ public class Album {
     public void setYear(Integer year) {
         this.year = year;
     }
+
+//    public Artist getArtist() {
+//        return artist;
+//    }
+
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
+
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public Set<Style> getStyles() {
+        return styles;
+    }
+
+    public void setStyles(Set<Style> styles) {
+        this.styles = styles;
+    }
+
+    public Set<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(Set<Song> songs) {
+        this.songs = songs;
+    }
+
 }

@@ -33,6 +33,10 @@ public class Song {
         this.name = name;
     }
 
+//    public Album getAlbumid() {
+//        return albumid;
+//    }
+
     public void setAlbumid(Album albumid) {
         this.albumid = albumid;
     }

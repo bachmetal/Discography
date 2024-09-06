@@ -14,8 +14,8 @@ CREATE TABLE album
     NAME           VARCHAR(250) NOT NULL,
     thumbnailphoto VARCHAR(500),
     year           YEAR,
-    ArtistId       INT,
-    FOREIGN KEY (ArtistId) REFERENCES artist (id)
+    Artist_Id       INT,
+    FOREIGN KEY (Artist_Id) REFERENCES artist (id)
 );
 
 CREATE TABLE song
@@ -65,7 +65,7 @@ VALUES ("Slipknot",
        ("Five Finger Death Punch",
         "https://cdns-images.dzcdn.net/images/artist/9de74fe4dcb22adfc4dab26ea1f7c02c/500x500-000000-80-0-0.jpg");
 
-INSERT INTO album(name, year, thumbnailphoto, ArtistId)
+INSERT INTO album(name, year, thumbnailphoto, Artist_Id)
 VALUES ("Live At MSG", 2023,
         "https://preview.redd.it/live-at-msg-kind-of-a-weird-uninspired-release-no-band-v0-y5ioaik395jb1.jpg?width=640&crop=smart&auto=webp&s=f0220c6e982dc1b4b05343107f8308672ce874b9",
         1),

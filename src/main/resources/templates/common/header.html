@@ -9,16 +9,16 @@
 
     <header th:fragment="header">
         <nav class="nav navbar navbar-dark rounded" style="background-color: rgb(14,12,13)">
-            <a th:href="@{/}" class="navbar-brand mb-0 text-white">
-                <img class="d-inline-block align-center me-3"
+            <a th:href="@{/}" class="navbar-brand mb-0 text-white d-flex">
+                <img class="align-center me-3"
                      th:src="@{img/logo.jpeg}" width="50"
                      height="50">
-                <h2>Discography</h2>
+                <h2 class="d-flex flex-column justify-content-center">Discography</h2>
             </a>
 
             <ul class="nav">
                 <li class="nav-item active">
-                    <a href="#" class="nav-link text-white">Submit a request</a>
+                    <a th:href="@{/add-new.html}" class="nav-link text-white">Submit a request</a>
                 </li>
             </ul>
         </nav>

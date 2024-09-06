@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new artist</title>
+    <link th:href="@{css/bootstrap/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{js/bootstrap/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <div th:replace="~{common/header :: header}"></div>
+    <div class="progress mb-3 h-auto">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%;"
+             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%
+        </div>
+    </div>
+    <form action="#" th:action="@{/submit-artist}" th:method="post">
+        <div id="step-1" th:object="${artist}">
+            <h1>Artist</h1>
+            <label for="artists">Please choose the artist:</label>
+            <select name="artists" id="artists" onchange="showAddNewArtist()" class="mb-3">
+                <option th:each="artist : ${allArtists}" th:value="${artist.name}" th:text="${artist.name}"></option>
+                <option value="add-new">Add new artist</option>
+            </select>
+            <div id="artist-fields" style="display: none">
+                <div class="mb-3">
+                    <label class="form-label">Artist name:<span style="color: red">*</span></label>
+                    <input class="form-control" type="text" th:field="*{name}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Cover art link:<span style="color: red">*</span></label>
+                    <input type="url" class="form-control" th:field="*{thumbnailphoto}" required>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-primary" onclick="nextStep()">Next
+                </button>
+            </div>
+        </div>
+
+        <div id="step-2" style="display: none">
+            <h1>Album</h1>
+            <div>
+                <label for="artists">Please choose the album:</label>
+                <select name="albums" id="albums" onchange="showAddNewAlbum()" class="mb-3">
+                    <option th:each="album : ${allAlbums}" th:value="${album.name}" th:text="${album.name}"></option>
+                    <option value="add-new">Add new album</option>
+                </select>
+                <div class="mb-3">
+                    <label class="form-label">Album name:<span style="color: red">*</span></label>
+                    <input class="form-control" type="text" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Cover art URL:<span style="color: red">*</span></label>
+                    <input class="form-control" type="url" required>
+                </div>
+                <div class="mb-3 w-25">
+                    <label class="form-label">Year:<span style="color: red">*</span></label>
+                    <input class="form-control" type="number" min="1900" max="2099" step="1" value="2024" required>
+                </div>
+                <label for="genres">Genre:</label>
+                <div>
+                    <select name="genres" id="genres" class="mb-3" multiple>
+                        <option th:each="genre : ${allGenres}" th:value="${genre.name}"
+                                th:text="${genre.name}"></option>
+                    </select>
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/8377/8377219.png" alt="add" style="width: 20px"></a>
+                </div>
+                <label for="styles">Styles:</label>
+                <div>
+                    <select name="styles" id="styles" class="mb-3" multiple>
+                        <option th:each="style : ${allStyles}" th:value="${style.name}"
+                                th:text="${style.name}"></option>
+                    </select>
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/8377/8377219.png" alt="add" style="width: 20px"></a>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-primary" onclick="previousStep()">Previous</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+        </div>
+        <div id="step-3" style="display: none;">
+            <h1>Track</h1>
+            <div class="mb-3 form-check">
+                <div class="mb-3">
+                    <label class="form-label">Track name:<span style="color: red">*</span></label>
+                    <input class="form-control" type="text"
+                           required>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-primary" onclick="previousStep()">Previous</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+        <p th:if="${message}" th:text="${message}" style="color: green;"></p>
+    </form>
+
+
+    <div th:replace="~{common/header :: footer}"></div>
+</div>
+<script>
+    function nextStep() {
+        let currentStep;
+        document.querySelectorAll('form > div').forEach((step) => {
+            if (step.style.display !== 'none') {
+                currentStep = step.id.split('-')[1];
+            }
+        });
+        document.querySelector('#step-' + currentStep).style.display = 'none';
+        currentStep++;
+        document.querySelector('#step-' + currentStep).style.display = 'block';
+        document.querySelector('.progress-bar-animated').style.width = currentStep * 25 + '%';
+        document.querySelector('.progress-bar-animated').innerHTML = currentStep * 25 + '%';
+    }
+
+    function previousStep() {
+        let currentStep;
+        document.querySelectorAll('form > div').forEach((step) => {
+            if (step.style.display === 'block') {
+                currentStep = step.id.split('-')[1];
+            }
+        });
+        document.querySelector('#step-' + currentStep).style.display = 'none';
+        currentStep--;
+        document.querySelector('#step-' + currentStep).style.display = 'block';
+        document.querySelector('.progress-bar-animated').style.width = currentStep * 25 + '%';
+        document.querySelector('.progress-bar-animated').innerHTML = currentStep * 25 + '%';
+    }
+
+    function showAddNewArtist() {
+        const state = document.querySelector("#artists").value;
+        if (state === "add-new") {
+            document.querySelector("#artist-fields").style.display = "block";
+        } else {
+            document.querySelector("#artist-fields").style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,76 +1,5 @@
-/*
-async function albumCards() {
-    try {
-        let cards = document.querySelector("#cards");
-        let artists = await fetchArtists();
-        // Sort artist names alphabetically
-        artists.sort(function (a, b) {
-            if (a.name < b.name) {
-                return -1;
-            }
-            if (a.name > b.name) {
-                return 1;
-            }
-            return 0;
-        });
-        allArtists = artists;
-
-        cards.innerHTML = ""; // Clear existing artists
-        artists.forEach(artist => {
-            cards.innerHTML += `
-        <a href="albums.html" class="card m-2 stretched-link" style="width: 18rem" id="${artist.id}">
-            <div class="card-body">
-                <p class="card-title text-decoration-none fs-5 fw-bold">${artist.name}</p>
-                <img class="card-image-top w-100" src="${artist.thumbnailphoto}">
-            </div>
-        </a>
-`;
-        });
-    } catch (error) {
-        console.error(error.message);
-    }
-}
-
-
-
-document.querySelector("#search").addEventListener("click", function search() {
-    console.log("search clicked!");
-});
-
-async function fetchAlbum(id) {
-    try {
-        let response = await fetch(`http://localhost:8080/artists/` + id, {method: "GET"});
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error(`Error fetching album: ${error.message}`);
-        return [];
-    }
-}
-
-document.addEventListener("DOMContentLoaded", async function () {
-    if (window.location.toString().endsWith("index.h")) {
-        artistCards().then(r => console.log("Artists loaded"));
-
-        document.querySelector(".card").addEventListener("click", function (e) {
-            sessionStorage.setItem("artistId", e.target.id);
-        })
-    } else if (window.location.toString().endsWith("albums.h")) {
-        if (sessionStorage.getItem("artistId") == null) {
-            document.querySelector("#albums").innerHTML = "<h1>Sorry, but you didn't choose any artist.</h1>";
-            return;
-        }
-        let albums = await fetchAlbum(sessionStorage.getItem("artistId"));
-
-        // document.querySelector("#albums").innerHTML=`
-// `;
-    }
-})
- */
-let clickedArtistIndex;
-let clickedAlbumIndex;
+let clickedArtistId;
+let clickedAlbumId;
 let artistsData;
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -81,40 +10,45 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 });
 
-// Album List
-document.querySelector("#cards").addEventListener("click", async function (e) {
-    if (!artistsData) return; // Ensure data is available
-    clickedArtistIndex = e.target.id - 1;
+// Click event listener for debugging
+// document.addEventListener("click", async function (e) {
+//     console.log(e.target);
+// });
 
-    document.querySelector("#artist").innerText = e.target.innerText;
-    document.querySelector("img.artist-thumbnail").src = e.target.querySelector("img").src;
+// Album List
+document.querySelector(".card").addEventListener("click", async function (e) {
+    if (!artistsData) return; // Ensure data is available
+    clickedArtistId = e.target.id;
+
+    let thisArtist = artistsData.find(artist => artist.name === e.target.innerText);
+    document.querySelector("#artist").innerText = thisArtist.name;
+    document.querySelector("img.artist-thumbnail").src = thisArtist.thumbnailphoto;
 
     let albumList = document.querySelector(".albumlist");
     albumList.innerHTML = "";
 
-    for (let i = 0; i < artistsData[clickedArtistIndex].albums.length; i++) {
+    for (let i = 0; i < thisArtist.albums.length; i++) {
         // const button = document.querySelector(".albumlist button");
-        // button.setAttribute("id", artistsData[clickedArtistIndex].albums[i].id);
-        // button.querySelector(".album-name").innerText = artistsData[clickedArtistIndex].albums[i].name;
-        // button.querySelector(".album-year").innerText = artistsData[clickedArtistIndex].albums[i].year;
+        // button.setAttribute("id", artistsData[clickedArtistId].albums[i].id);
+        // button.querySelector(".album-name").innerText = artistsData[clickedArtistId].albums[i].name;
+        // button.querySelector(".album-year").innerText = artistsData[clickedArtistId].albums[i].year;
 
-        let button = document.createElement("button");
+        let button = document.createElement("a");
 
-        button.classList.add("list-group-item", "d-inline-flex", "justify-content-between");
+        button.classList.add("list-group-item", "d-flex", "justify-content-between");
         button.type = "button";
         button.setAttribute("data-bs-toggle", "modal");
         button.setAttribute("data-bs-target", "#album");
         button.setAttribute("onclick", "albumBtn(this)");
-        button.id = artistsData[clickedArtistIndex].albums[i].id;
+        button.id = thisArtist.albums[i].id;
 
         let albumName = document.createElement("p");
-        albumName.classList.add("m-0", "album-name");
-        albumName.innerText = artistsData[clickedArtistIndex].albums[i].name;
+        albumName.classList.add("m-0", "album-name", "w-75");
+        albumName.innerText = thisArtist.albums[i].name;
 
         let year = document.createElement("p");
-        year.classList.add("m-0");
-        year.innerText = artistsData[clickedArtistIndex].albums[i].year;
-        year.classList.add("badge", "bg-primary", "rounded-pill", "album-year");
+        year.innerText = thisArtist.albums[i].year;
+        year.classList.add("m-0", "badge", "bg-primary", "rounded-pill", "h-auto", "album-year", "d-flex", "align-items-center");
 
         button.appendChild(albumName);
         button.appendChild(year);
@@ -125,11 +59,13 @@ document.querySelector("#cards").addEventListener("click", async function (e) {
 // Album
 const albumBtn = async (button) => {
     if (!artistsData) return; // Ensure data is available
-    clickedAlbumIndex = button.getAttribute("id");
+    clickedAlbumId = button.getAttribute("id");
 
     let tracklist = document.querySelector("#tracklist > div");
     tracklist.innerHTML = "";
-    let find = artistsData[clickedArtistIndex].albums.find(album => album.name === button.querySelector(".album-name").innerText);
+    let thisArtist = artistsData.find(artist => artist.name === document.querySelector("#artist").innerText);
+    console.log(document.querySelector("#artist"));
+    let find = thisArtist.albums.find(album => album.name === button.querySelector(".album-name").innerText);
     document.querySelector("#album > div > div > div.modal-header > h4").innerText = document.querySelector("#artist").innerText;
     document.querySelector("#thumbnail > h5").innerText = find.name;
     document.querySelector("#thumbnail > img").src = find.thumbnailphoto;
@@ -163,7 +99,7 @@ document.querySelector("#search-button").addEventListener("click", async functio
         let artistElement;
 
         if (artist.name.toLowerCase().includes(keyword.toLowerCase())) {
-            artistElement = addArtistElementInSearch(artist.name);
+            artistElement = addArtistElementInSearch(artist.name, artist.id);
             listGroup.appendChild(artistElement);
             artistFound = true;
         }
@@ -174,11 +110,11 @@ document.querySelector("#search-button").addEventListener("click", async functio
 
             if (album.name.toLowerCase().includes(keyword.toLowerCase())) {
                 if (!artistFound) {
-                    artistElement = addArtistElementInSearch(artist.name);
+                    artistElement = addArtistElementInSearch(artist.name, artist.id);
                     listGroup.appendChild(artistElement);
                     artistFound = true;
                 }
-                albumElement = addAlbumElementInSearch(album.name);
+                albumElement = addAlbumElementInSearch(album.name, album.id);
                 artistElement.appendChild(albumElement);
                 albumFound = true;
             }
@@ -186,10 +122,10 @@ document.querySelector("#search-button").addEventListener("click", async functio
                 if (song.name.toLowerCase().includes(keyword.toLowerCase())) {
                     let songElement = addSongElementInSearch(song.name);
                     if (!albumFound) {
-                        albumElement = addAlbumElementInSearch(album.name);
+                        albumElement = addAlbumElementInSearch(album.name, album.id);
 
                         if (!artistFound) {
-                            artistElement = addArtistElementInSearch(artist.name);
+                            artistElement = addArtistElementInSearch(artist.name, artist.id);
                             listGroup.appendChild(artistElement);
                             artistFound = true;
                         }
@@ -210,23 +146,37 @@ function addSongElementInSearch(songName) {
     return songElement;
 }
 
-function addAlbumElementInSearch(albumName) {
+function addAlbumElementInSearch(albumName, id) {
     let albumElement = document.createElement("ul");
     albumElement.classList.add("list-group-item", "shadow", "rounded", "album");
     albumElement.setAttribute("style", "background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(11,94,215,1) 100%);");
 
     let albumLink = document.createElement("a");
-    albumLink.href = "#";
+    // albumLink.href = "#";
+    // albumLink.setAttribute("data-bs-toggle", "modal");
+    // albumLink.setAttribute("data-bs-target", "#album");
     albumLink.classList.add("text-decoration-none");
+    albumLink.id = id;
     albumLink.innerText = albumName;
     albumLink.style.color = "black";
     albumElement.appendChild(albumLink);
     return albumElement;
 }
 
-function addArtistElementInSearch(artistName) {
+function addArtistElementInSearch(artistName, id) {
     let artistElement = document.createElement("ul");
     artistElement.classList.add("list-group-item", "m-2", "artist");
-    artistElement.innerText = artistName;
+
+    let artistLink = document.createElement("a");
+    // artistLink.href = "#";
+    // artistLink.id = id;
+    // artistLink.setAttribute("data-bs-toggle", "modal");
+    // artistLink.setAttribute("data-bs-target", "#albums");
+    // artistLink.setAttribute("onclick", "artistBtnInSrch(this)");
+
+    artistLink.classList.add("text-decoration-none");
+    artistLink.innerText = artistName;
+    artistLink.style.color = "black";
+    artistElement.appendChild(artistLink);
     return artistElement;
 }

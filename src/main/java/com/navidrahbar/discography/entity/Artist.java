@@ -19,16 +19,8 @@ public class Artist {
     @Column(name = "thumbnailphoto", length = 500)
     private String thumbnailphoto;
 
-    @OneToMany(mappedBy = "artist")
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
     private Set<Album> albums = new LinkedHashSet<>();
-
-    public Set<Album> getAlbums() {
-        return albums;
-    }
-
-    public void setAlbums(Set<Album> albums) {
-        this.albums = albums;
-    }
 
     public Integer getId() {
         return id;
@@ -52,5 +44,23 @@ public class Artist {
 
     public void setThumbnailphoto(String thumbnailphoto) {
         this.thumbnailphoto = thumbnailphoto;
+    }
+
+    public Set<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(Set<Album> albums) {
+        this.albums = albums;
+    }
+
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", thumbnailphoto='" + thumbnailphoto + '\'' +
+//                ", albums=" + albums +
+                '}';
     }
 }
