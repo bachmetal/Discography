@@ -17,4 +17,7 @@ public interface ArtistRepository extends JpaRepository<Artist, Integer> {
 
     @Query(value = "select a from Artist a where a.name = ?1")
     Optional<Artist> findByName(String name);
+
+    @Query(value = "select count(a) from Artist a where a.name = ?1")
+    int countArtistsByName(String name);
 }

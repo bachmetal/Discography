@@ -55,15 +55,25 @@ public class DataManager {
     }
 
     public void addArtist(Artist artist) {
-        artistRepository.save(artist);
+        if (artistRepository.countArtistsByName(artist.getName()) == 0) {
+            artistRepository.save(artist);
+        }
         artist.getAlbums().forEach(album -> {
-            album.setArtist(artist);
+            artistRepository.findByName(artist.getName()).ifPresent(album::setArtist);
             album.setThumbnailphoto(album.getThumbnailphoto());
             album.setYear(album.getYear());
-            genreRepository.saveAll(album.getGenres());
-            album.setGenres(album.getGenres());
-            styleRepository.saveAll(album.getStyles());
-            album.setStyles(album.getStyles());
+            album.getGenres().forEach(genre -> {
+                if (genreRepository.countGenresByName(genre.getName()) == 0) {
+                    genreRepository.save(genre);
+                }
+                genreRepository.findByName(genre.getName()).ifPresent(album::setGenres);
+            });
+            album.getStyles().forEach(style -> {
+                if (styleRepository.countStylesByName(style.getName()) == 0) {
+                    styleRepository.save(style);
+                }
+                styleRepository.findByName(style.getName()).ifPresent(album::setStyles);
+            });
             songRepository.saveAll(album.getSongs());
             album.getSongs().forEach(song -> song.setAlbumid(album));
             albumRepository.save(album);
@@ -100,14 +110,6 @@ public class DataManager {
 
     public List<Album> findAlbumsByArtistId(Integer id) {
         return albumRepository.findAllByArtistId(id);
-    }
-
-    public Optional<Genre> findGenreByName(String name) {
-        return genreRepository.findGenreByName(name);
-    }
-
-    public Optional<Style> findStyleByName(String name) {
-        return styleRepository.findStyleByName(name);
     }
 
     public void addAllGenre(Set<Genre> genres) {
