@@ -56,6 +56,18 @@ public class DataManager {
 
     public void addArtist(Artist artist) {
         artistRepository.save(artist);
+        artist.getAlbums().forEach(album -> {
+            album.setArtist(artist);
+            album.setThumbnailphoto(album.getThumbnailphoto());
+            album.setYear(album.getYear());
+            genreRepository.saveAll(album.getGenres());
+            album.setGenres(album.getGenres());
+            styleRepository.saveAll(album.getStyles());
+            album.setStyles(album.getStyles());
+            songRepository.saveAll(album.getSongs());
+            album.getSongs().forEach(song -> song.setAlbumid(album));
+            albumRepository.save(album);
+        });
     }
 
     public Album addAlbum(Album album) {
