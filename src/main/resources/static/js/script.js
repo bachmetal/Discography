@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 // Album List
 document.querySelector(".card").addEventListener("click", async function (e) {
+    if (e.target.id === "cards") return;
     if (!artistsData) return; // Ensure data is available
     clickedArtistId = e.target.id;
 
@@ -64,7 +65,6 @@ const albumBtn = async (button) => {
     let tracklist = document.querySelector("#tracklist > div");
     tracklist.innerHTML = "";
     let thisArtist = artistsData.find(artist => artist.name === document.querySelector("#artist").innerText);
-    console.log(document.querySelector("#artist"));
     let find = thisArtist.albums.find(album => album.name === button.querySelector(".album-name").innerText);
     document.querySelector("#album > div > div > div.modal-header > h4").innerText = document.querySelector("#artist").innerText;
     document.querySelector("#thumbnail > h5").innerText = find.name;

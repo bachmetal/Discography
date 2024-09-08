@@ -4,6 +4,7 @@ import com.navidrahbar.discography.entity.*;
 import com.navidrahbar.discography.repository.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -130,5 +131,17 @@ public class DataManager {
 
     public List<Style> findAllStyles() {
         return styleRepository.findAll();
+    }
+
+    public List<Album> findAllAlbumsByArtist(int id) {
+        return albumRepository.findAllByArtistId(id);
+    }
+
+    public List<Album> findAllAlbums() {
+        return albumRepository.findAll();
+    }
+
+    public Boolean existsGenre(String name) {
+        return genreRepository.existsByName(name);
     }
 }

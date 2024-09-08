@@ -36,7 +36,7 @@ public class RestController {
         return ResponseEntity.ok(dataManager.getSearchResult(keyword));
     }
 
-//     Submit a POST request to http://localhost:8080/api/artist with a JSON body to add a new artist
+    //     Submit a POST request to http://localhost:8080/api/artist with a JSON body to add a new artist
     @PostMapping("/artist")
     public ResponseEntity<Artist> addArtist(@RequestBody Artist artist) {
         dataManager.addArtist(artist);
@@ -65,5 +65,16 @@ public class RestController {
     @PostMapping("/style")
     public ResponseEntity<Style> addStyle(@RequestBody Style style) {
         return ResponseEntity.ok(dataManager.addStyle(style));
+    }
+
+    // Submit a GET request to http://localhost:8080/api/genre to get a list of all genres
+    @GetMapping("/genres")
+    public ResponseEntity<List<Genre>> getAllGenres() {
+        return ResponseEntity.ok(dataManager.findAllGenres());
+    }
+
+    @GetMapping("/styles")
+    public ResponseEntity<List<Style>> getAllStyles() {
+        return ResponseEntity.ok(dataManager.findAllStyles());
     }
 }

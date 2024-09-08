@@ -38,14 +38,9 @@ public class Controller {
     }
 
     @GetMapping("/add-new.html")
-    public String showForm(Model model, Artist artist) {
+    public String showForm(Model model) {
         model.addAttribute("artist", new Artist());
-//        model.addAttribute("album", new Album());
-//        model.addAttribute("song", new Song());
-//        model.addAttribute("genre", new Genre());
-//        model.addAttribute("style", new Style());
         model.addAttribute("allArtists", dataManager.findAllArtists().stream().sorted(Comparator.comparing(Artist::getName)));
-//        model.addAttribute("allAlbums", dataManager.findAllAlbumsByArtist().stream().sorted(Comparator.comparing(Album::getName)));
         model.addAttribute("allGenres", dataManager.findAllGenres().stream().sorted(Comparator.comparing(Genre::getName)));
         model.addAttribute("allStyles", dataManager.findAllStyles().stream().sorted(Comparator.comparing(Style::getName)));
         return "add-new"; // Thymeleaf template name

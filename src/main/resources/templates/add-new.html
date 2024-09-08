@@ -5,6 +5,9 @@
     <title>Add new artist</title>
     <link th:href="@{css/bootstrap/bootstrap.min.css}" rel="stylesheet">
     <script th:src="@{js/bootstrap/bootstrap.bundle.min.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script th:src="@{js/submit.js}"></script>
 </head>
 <body>
 
@@ -16,129 +19,180 @@
              aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%
         </div>
     </div>
-    <form action="#" th:action="@{/submit-artist}" th:method="post">
-        <div id="step-1" th:object="${artist}">
-            <h1>Artist</h1>
-            <label for="artists">Please choose the artist:</label>
-            <select name="artists" id="artists" onchange="showAddNewArtist()" class="mb-3">
-                <option th:each="artist : ${allArtists}" th:value="${artist.name}" th:text="${artist.name}"></option>
-                <option value="add-new">Add new artist</option>
-            </select>
-            <div id="artist-fields" style="display: none">
-                <div class="mb-3">
-                    <label class="form-label">Artist name:<span style="color: red">*</span></label>
-                    <input class="form-control" type="text" th:field="*{name}" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Cover art link:<span style="color: red">*</span></label>
-                    <input type="url" class="form-control" th:field="*{thumbnailphoto}" required>
-                </div>
-            </div>
-            <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-primary" onclick="nextStep()">Next
-                </button>
-            </div>
-        </div>
-
-        <div id="step-2" style="display: none">
-            <h1>Album</h1>
-            <div>
-                <label for="artists">Please choose the album:</label>
-                <select name="albums" id="albums" onchange="showAddNewAlbum()" class="mb-3">
-                    <option th:each="album : ${allAlbums}" th:value="${album.name}" th:text="${album.name}"></option>
-                    <option value="add-new">Add new album</option>
+    <form action="/api/artist" method="post" id="add-new-item">
+        <fieldset>
+            <div id="step-1" th:object="${artist}">
+                <h1>Artist</h1>
+                <label for="artists">Please choose the artist:</label>
+                <select name="artists" id="artists" onchange="showAddNewArtist()" class="mb-3">
+                    <option th:each="artist : ${allArtists}" th:value="${artist.name}"
+                            th:text="${artist.name}"></option>
+                    <option value="add-new">Add new artist</option>
                 </select>
-                <div class="mb-3">
-                    <label class="form-label">Album name:<span style="color: red">*</span></label>
-                    <input class="form-control" type="text" required>
+                <div id="artist-fields" style="display: none">
+                    <div class="mb-3">
+                        <label class="form-label">Artist name:<span style="color: red">*</span></label>
+                        <input class="form-control" type="text" th:field="*{name}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Cover art link:<span style="color: red">*</span></label>
+                        <input type="url" class="form-control" th:field="*{thumbnailphoto}" required>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Cover art URL:<span style="color: red">*</span></label>
-                    <input class="form-control" type="url" required>
-                </div>
-                <div class="mb-3 w-25">
-                    <label class="form-label">Year:<span style="color: red">*</span></label>
-                    <input class="form-control" type="number" min="1900" max="2099" step="1" value="2024" required>
-                </div>
-                <label for="genres">Genre:</label>
-                <div>
-                    <select name="genres" id="genres" class="mb-3" multiple>
-                        <option th:each="genre : ${allGenres}" th:value="${genre.name}"
-                                th:text="${genre.name}"></option>
-                    </select>
-                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/8377/8377219.png" alt="add" style="width: 20px"></a>
-                </div>
-                <label for="styles">Styles:</label>
-                <div>
-                    <select name="styles" id="styles" class="mb-3" multiple>
-                        <option th:each="style : ${allStyles}" th:value="${style.name}"
-                                th:text="${style.name}"></option>
-                    </select>
-                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/8377/8377219.png" alt="add" style="width: 20px"></a>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-primary" onclick="previousStep()">Previous</button>
-                    <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary" onclick="nextStep();setArtist();">Next
+                    </button>
                 </div>
             </div>
-        </div>
-        <div id="step-3" style="display: none;">
-            <h1>Track</h1>
-            <div class="mb-3 form-check">
-                <div class="mb-3">
-                    <label class="form-label">Track name:<span style="color: red">*</span></label>
-                    <input class="form-control" type="text"
-                           required>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-primary" onclick="previousStep()">Previous</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+
+            <div id="step-2" style="display: none">
+                <h1>Album</h1>
+                <div>
+                    <label for="albums">Please choose the album:</label>
+                    <select name="albums" id="albums" class="mb-3" onchange="hideAddNewAlbum()">
+                        <option value="add-new">Add new album</option>
+                    </select>
+                    <div id="albumFields">
+                        <div class="mb-3">
+                            <label class="form-label">Album name:<span style="color: red">*</span></label>
+                            <input id="albumName" class="form-control" type="text" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Cover art URL:<span style="color: red">*</span></label>
+                            <input id="albumThumbnail" class="form-control" type="url" required>
+                        </div>
+                        <div class="mb-3 w-25">
+                            <label class="form-label">Year:<span style="color: red">*</span></label>
+                            <input id="year" class="form-control" type="number" min="1900" max="2099" step="1" value="2024"
+                                   required>
+                        </div>
+                        <div class="d-flex flex-row">
+                            <div class="w-25">
+                                <label for="genres">Genre:</label>
+                                <a href="#" class="ms-1" data-bs-toggle="modal" data-bs-target="#addGenreModal">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/8377/8377219.png" alt="add"
+                                         style="width: 20px">
+                                </a>
+                                <div class="w-25">
+                                    <select name="genres" id="genres" class="mb-3">
+                                        <option th:each="genre : ${allGenres}" th:value="${genre.name}"
+                                                th:text="${genre.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="addGenreModal" tabindex="-1"
+                                 aria-labelledby="addGenreModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addGenreModalLabel">Add New Genre</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="genre" class="form-label">Genre Name:</label>
+                                                <input type="text" class="form-control" id="genre" name="genre"
+                                                       required>
+                                            </div>
+                                            <button type="button"
+                                                    onclick="addGenreToDb(document.querySelector('#genre').value);"
+                                                    class="btn btn-primary" data-bs-dismiss="modal">Add Genre
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="styles">Styles:</label>
+                        <a href="#" class="ms-1" data-bs-toggle="modal" data-bs-target="#addStyleModal"><img
+                                src="https://cdn-icons-png.flaticon.com/512/8377/8377219.png"
+                                alt="add"
+                                style="width: 20px"></a>
+                        <div>
+                            <select name="styles" id="styles" class="mb-3 w-25" multiple>
+                                <option th:each="style : ${allStyles}" th:value="${style.name}"
+                                        th:text="${style.name}"></option>
+                            </select>
+                            <div class="modal fade" id="addStyleModal" tabindex="-1"
+                                 aria-labelledby="addStyleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addStyleModalLabel">Add New Style</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="genre" class="form-label">Style Name:</label>
+                                                <input type="text" class="form-control" id="style" name="style"
+                                                       required>
+                                            </div>
+                                            <button type="button"
+                                                    onclick="addStyleToDb(document.querySelector('#style').value);"
+                                                    class="btn btn-primary" data-bs-dismiss="modal">Add Style
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-primary" onclick="previousStep()">Previous</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <p th:if="${message}" th:text="${message}" style="color: green;"></p>
+            <div id="step-3" style="display: none;">
+                <h1>Track</h1>
+                <div class="mb-3 form-check">
+                    <div id="songs">
+                        <div class="mb-3 d-flex flex-row">
+                            <label class="form-label" style="width: 7rem">Track name:<span style="color: red">*</span></label>
+                            <input class="form-control" type="text"
+                                   required>
+                            <a href="javascript:void(0)" onclick="AddMoreSong()">
+                                <img
+                                        src="https://cdn-icons-png.flaticon.com/512/8377/8377219.png"
+                                        alt="add"
+                                        style="width: 20px">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-primary" onclick="previousStep()">Previous</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <p th:if="${message}" th:text="${message}" style="color: green;"></p>
+        </fieldset>
     </form>
 
 
     <div th:replace="~{common/header :: footer}"></div>
 </div>
 <script>
-    function nextStep() {
-        let currentStep;
-        document.querySelectorAll('form > div').forEach((step) => {
-            if (step.style.display !== 'none') {
-                currentStep = step.id.split('-')[1];
-            }
+    $(document).ready(function () {
+        $('#genre-form').submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (data) {
+                    $('#genres').html(data);
+                },
+                error: function () {
+                    alert('Error adding genre.');
+                }
+            });
         });
-        document.querySelector('#step-' + currentStep).style.display = 'none';
-        currentStep++;
-        document.querySelector('#step-' + currentStep).style.display = 'block';
-        document.querySelector('.progress-bar-animated').style.width = currentStep * 25 + '%';
-        document.querySelector('.progress-bar-animated').innerHTML = currentStep * 25 + '%';
-    }
-
-    function previousStep() {
-        let currentStep;
-        document.querySelectorAll('form > div').forEach((step) => {
-            if (step.style.display === 'block') {
-                currentStep = step.id.split('-')[1];
-            }
-        });
-        document.querySelector('#step-' + currentStep).style.display = 'none';
-        currentStep--;
-        document.querySelector('#step-' + currentStep).style.display = 'block';
-        document.querySelector('.progress-bar-animated').style.width = currentStep * 25 + '%';
-        document.querySelector('.progress-bar-animated').innerHTML = currentStep * 25 + '%';
-    }
-
-    function showAddNewArtist() {
-        const state = document.querySelector("#artists").value;
-        if (state === "add-new") {
-            document.querySelector("#artist-fields").style.display = "block";
-        } else {
-            document.querySelector("#artist-fields").style.display = "none";
-        }
-    }
+    });
 </script>
 </body>
 </html>

@@ -15,4 +15,7 @@ public interface GenreRepository extends JpaRepository<Genre, Integer> {
     int countGenresByName(String name);
 
     Optional<Set<Genre>> findByName(String name);
+
+    @Query("SELECT CASE WHEN COUNT(g) > 0 THEN true ELSE false END FROM Genre g WHERE g.name = ?1")
+    Boolean existsByName(String name);
 }
