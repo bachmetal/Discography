@@ -67,10 +67,12 @@ function setArtist() {
 
     dataFromDB.forEach((element) => {
         if (element.name === artistName) {
+            document.querySelector('#albums').innerHTML = "<option value=\"add-new\">Add new album</option>";
             element.albums.forEach((album) => {
                 let option = document.createElement('option');
                 option.value = album.name;
                 option.text = album.name;
+
                 document.querySelector('#albums').appendChild(option);
             });
         }
@@ -163,51 +165,140 @@ $(document).ready(function () {
 });
 
 function validateForm(step) {
+    let result = true;
     if (step === 1) {
         if (document.querySelector("#artists").value === "add-new") {
-            if (document.querySelector("#name").value === "" || document.querySelector("#thumbnailphoto").value === "") {
-                alert("Please fill out the artist name and thumbnail fields!");
-                return false;
+            if (document.querySelector("#name").value === "") {
+                document.querySelector("#name").classList.add("is-invalid");
+                if (document.querySelector("#name").parentNode.querySelector('.invalid-feedback') === null) {
+                    let message = document.createElement('div');
+                    message.classList.add('invalid-feedback');
+                    message.innerText = 'Please enter a valid name!';
+                    document.querySelector("#name").parentNode.appendChild(message);
+                }
+                result = false;
+            }
+            if (document.querySelector("#thumbnailphoto").value === "" || document.querySelector("#thumbnailphoto").value.startsWith("http") === false) {
+                document.querySelector("#thumbnailphoto").classList.add("is-invalid");
+                if (document.querySelector("#thumbnailphoto").parentNode.querySelector('.invalid-feedback') === null) {
+                    let message = document.createElement('div');
+                    message.classList.add('invalid-feedback');
+                    message.innerText = 'Please enter a valid link!';
+                    document.querySelector("#thumbnailphoto").parentNode.appendChild(message);
+                }
+                result = false;
             }
         }
     }
     if (step === 2) {
         if (document.querySelector("#albums").value === "add-new") {
-            if (document.querySelector("#albumName").value === "" || document.querySelector("#year").value === "" || document.querySelector("#albumThumbnail").value === "") {
-                alert("Please fill out the album name and year fields!");
-                return false;
+            if (document.querySelector("#albumName").value === "") {
+                document.querySelector("#albumName").classList.add("is-invalid");
+                if (document.querySelector("#albumName").parentNode.querySelector('.invalid-feedback') === null) {
+                    let message = document.createElement('div');
+                    message.classList.add('invalid-feedback');
+                    message.innerText = 'Please enter an album name!';
+                    document.querySelector("#albumName").parentNode.appendChild(message);
+                }
+                result = false;
             }
-        }
-    }
-    if (step === 2) {
-        if (document.querySelector("#albumThumbnail").value.startsWith("http") === false) {
-            alert("Please enter a valid URL for the album thumbnail!");
-            return false;
-        }
-    }
-    if (step === 2) {
-        if (document.querySelector("#genres").value === "add-new") {
-            if (document.querySelector("#genre").value === "") {
-                alert("Please fill out the genre field!");
-                return false;
+            if (document.querySelector("#year").value === "") {
+                document.querySelector("#year").classList.add("is-invalid");
+                if (document.querySelector("#year").parentNode.querySelector('.invalid-feedback') === null) {
+                    let message = document.createElement('div');
+                    message.classList.add('invalid-feedback');
+                    message.innerText = 'Please enter a year!';
+                    document.querySelector("#year").parentNode.appendChild(message);
+                }
+                result = false;
             }
-        }
-    }
-    if (step === 2) {
-        if (document.querySelector("#styles").value === "add-new") {
-            if (document.querySelector("#style").value === "") {
-                alert("Please fill out the style field!");
-                return false;
+            if (document.querySelector("#albumThumbnail").value === "" || document.querySelector("#albumThumbnail").value.startsWith("http") === false) {
+                document.querySelector("#albumThumbnail").classList.add("is-invalid");
+                if (document.querySelector("#albumThumbnail").parentNode.querySelector('.invalid-feedback') === null) {
+                    let message = document.createElement('div');
+                    message.classList.add('invalid-feedback');
+                    message.innerText = 'Please enter a valid link!';
+                    document.querySelector("#albumThumbnail").parentNode.appendChild(message);
+                }
+                result = false;
             }
+            if (document.querySelector("#genres").value === "") {
+                document.querySelector("#genres").classList.add("is-invalid");
+                if (document.querySelector("#genres").parentNode.querySelector('.invalid-feedback') === null) {
+                    let message = document.createElement('div');
+                    message.classList.add('invalid-feedback');
+                    message.innerText = 'Please select a genre!';
+                    document.querySelector("#genres").parentNode.appendChild(message);
+                }
+                result = false;
+            }
+
+            if (document.querySelector("#styles").value === "") {
+                document.querySelector("#styles").classList.add("is-invalid");
+                if (document.querySelector("#styles").parentNode.querySelector('.invalid-feedback') === null) {
+                    let message = document.createElement('div');
+                    message.classList.add('invalid-feedback');
+
+                    message.innerText = 'Please select at least one style!';
+                    document.querySelector("#styles").parentNode.appendChild(message);
+                }
+                result = false;
+            }
+
         }
     }
     if (step === 3) {
         if (document.querySelector("#songs").value === "add-new") {
             if (document.querySelector("#songName").value === "") {
-                alert("Please fill out at least one song name!");
-                return false;
+                document.querySelector("#songName").classList.add("is-invalid");
+                if (document.querySelector("#songName").parentNode.querySelector('.invalid-feedback') === null) {
+                    let message = document.createElement('div');
+                    message.classList.add('invalid-feedback');
+                    message.innerText = 'Please select at least one song!';
+                    document.querySelector("#songName").parentNode.appendChild(message);
+                }
+                result = false;
             }
         }
     }
-    return true;
+    return result;
 }
+
+// document.querySelector("#add-new-item").addEventListener("submit", (e) => {
+//     e.preventDefault();
+//     let artist = {
+//         name: artistName,
+//         thumbnailPhoto: artistURL,
+//         albums: []
+//     };
+// let album = {
+//     name: document.querySelector("#albumName").value,
+//     year: document.querySelector("#year").value,
+//     thumbnailPhoto: document.querySelector("#albumThumbnail").value,
+//     genres: [],
+//     styles: [],
+//     songs: []
+// };
+// let songs = document.querySelectorAll("#songs input").values();
+// console.log(songs);
+// let genre = {
+//     name: document.querySelector("#genres").value
+// };
+// let style = {
+//     name: document.querySelector("#styles").value
+// };
+// artist.albums.push(album);
+// album.genres.push(genre);
+// album.styles.push(style);
+// album.songs.push(song);
+// fetch('/api/artist', {
+//     method: 'POST',
+//     headers: {
+//         'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify(artist)
+// }).then(r => {
+//     alert("Artist added to database!");
+//     window.location.href = "/admin";
+// }).catch(e => console.error(e));
+// });
